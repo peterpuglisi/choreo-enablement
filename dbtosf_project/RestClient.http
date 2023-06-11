@@ -1,0 +1,47 @@
+### YOUR SALESFORCE CREDENTIALS TO GENERATE AN ACCESS TOKEN
+@sf_user=peterpuggs@gmail.com
+@sf_password=SellMeNow66!
+@sf_client_id=3MVG9wt4IL4O5wvJiHBESukzjLMW7rwqJ83srN_wIoZVsrgvY.fNrf8fU7sgzlqZ3uxkjUCi9RAZpScIyyXIt
+@sf_client_secret=A070BE9E40103B9F324D65BBCC827223B825910D44D8E6414D56B1F07342DB68
+@sf_securitytoken=eGyGLjAlBqsW66uckiWbjEYP
+### GENERATES AN ACCESS TOKEN
+###grant_type=password&client_id={{sf_client_id}}&client_secret={{sf_client_secret}}&username={{sf_user}}&password=SellMeNow66!eGyGLjAlBqsW66uckiWbjEYP
+###
+
+# @name createToken
+POST https://login.salesforce.com/services/oauth2/token 
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id=3MVG9wt4IL4O5wvJiHBESukzjLMW7rwqJ83srN_wIoZVsrgvY.fNrf8fU7sgzlqZ3uxkjUCi9RAZpScIyyXIt&client_secret=A070BE9E40103B9F324D65BBCC827223B825910D44D8E6414D56B1F07342DB68&username=peterpuggs@gmail.com&password=SellMeNow66!
+
+###
+
+
+### PRESERVES THE SALESFORCE ACCESS TOKEN IN THE REST CLIENT CONTEXT
+@sf_token={{createToken.response.body.access_token}}
+
+### PRESERVES YOUR SALESFORCE INSTANCE URL IN THE REST CLIENT CONTEXT
+@sf_instance_url={{createToken.response.body.instance_url}}
+
+### CHECKS THE AVAILABLE API VERSIONS. PICK THE LATEST AND SET @sf_api_version=56.0 BELOW ACCORDINGLY
+GET {{sf_instance_url}}/services/data
+Authorization: Bearer {{sf_token}}
+
+### SALESFORCE API VERSION OF YOUR CHOICE
+@sf_api_version=56.0
+
+### LIST ALL EXISTING CONTACTS IN SALESFORCE BY QUERY
+GET {{sf_instance_url}}/services/data/v{{sf_api_version}}/query?q=SELECT Id,FirstName,LastName,Email,Phone FROM Contact
+Content-Type: application/json
+Authorization: Bearer {{sf_token}}
+
+
+### DEMO
+
+curl -X POST 'https://login.salesforce.com/services/oauth2/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--d 'grant_type=password' \
+--d 'username=peterpuggs@gmail.com' \
+--d 'password=SellMeNow66!' \
+--d 'client_id=3MVG9wt4IL4O5wvJiHBESukzjLMW7rwqJ83srN_wIoZVsrgvY.fNrf8fU7sgzlqZ3uxkjUCi9RAZpScIyyXIt' \
+--d 'client_secret=A070BE9E40103B9F324D65BBCC827223B825910D44D8E6414D56B1F07342DB68'

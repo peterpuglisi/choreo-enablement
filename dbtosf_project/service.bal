@@ -1,3 +1,4 @@
+import ballerinax/salesforce;
 import ballerina/http;
 
 # A service representing a network-accessible API
@@ -24,7 +25,6 @@ service / on new http:Listener(9090) {
     }
 
 }
-
 
 type Attributes record {
     string 'type;
@@ -68,3 +68,4 @@ function transform(ContactsInput contactsInput) returns ContactsOutput => {
             id: recordsItem.Id
         }
 };
+
